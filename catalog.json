@@ -1,0 +1,14 @@
+{
+    "1": {
+        "name": "Arabica",
+        "price": 100.25
+    },
+    "2": {
+        "name": "Robusta",
+        "price": 80.5
+    },
+    "5": {
+        "name": "Coffe",
+        "price": 20.25
+    }
+}
