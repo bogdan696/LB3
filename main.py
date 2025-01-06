@@ -70,18 +70,26 @@ load_users_from_file(users_file)
 load_catalog_from_file(catalog_file)
 
 
-# Аутентифікація
-@auth.get_password
-def get_password(username):
-    return users.get(username)
-
-
 @auth.error_handler
 def unauthorized():
     return jsonify({"error": "Unauthorized access"}), 401
+#Додавання користувача
+@app.route('/register', methods=['POST'])
+def register_user():
+    data = request.json
+    if not data or 'username' not in data or 'password' not in data:
+        abort(400, "Invalid data")
 
+    username = data['username']
+    password = data['password']
+    if username in users:
+        abort(400, "User already exists")
 
-# Ендпоінт: GET і POST для /items
+    users[username] = password
+    save_users_to_file(users_file)  # Сохраняем пользователей в файл
+    return jsonify({"message": f"User {username} registered successfully"}), 201
+
+# Ендпоінт1: GET і POST для /items
 @app.route('/items', methods=['GET', 'POST'])
 @auth.login_required
 def manage_items():
